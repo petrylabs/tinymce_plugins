@@ -36,9 +36,15 @@ const urlPatterns: UrlPattern[] = [
     allowFullscreen: true
   },
   {
-    regex: /share.vidyard.com\/watch\/([a-z0-9\?&=\-_\\?]+)/i,
+    regex: /share\.vidyard\.com\/watch\/([a-z0-9\?&=\-_\\?]+)/i,
     type: 'iframe', w: 560, h: 314,
     url: '//play.vidyard.com/$1.html',
+    allowFullscreen: true
+  },
+  {
+    regex: /play\.vidyard\.com\/([^&]+)(&([a-z0-9&=\-_]+))?/i,
+    type: 'iframe', w: 560, h: 314,
+    url: '//play.vidyard.com/$1',
     allowFullscreen: true
   },
   {
