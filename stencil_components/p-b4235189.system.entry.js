@@ -1,0 +1,1 @@
+System.register(["./p-64b22a95.system.js","./p-1bc037df.system.js","./p-956e5db9.system.js","./p-b9a3de68.system.js","./p-b6179ba5.system.js"],(function(s){"use strict";return{setters:[function(){},function(){},function(){},function(t){s("snt_accordion",t.A)},function(t){s("snt_accordion_group",t.A)}],execute:function(){}}}));

@@ -1,0 +1,1 @@
+import{r as s}from"./p-8a8b139b.js";const t=class{constructor(t){s(this,t),this.name="",this.devices="",this.height="",this.spacing=""}render(){}};export{t as snt_viewport}
