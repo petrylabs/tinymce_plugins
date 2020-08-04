@@ -1,22 +1,23 @@
 const getHtml = function (data) {
   return (`
-    <details>
-      <summary class="summary">${data.summary}</summary>
-      <span class="details">${data.details}</span>
-    </details>
+    <snt-accordion>
+      <div slot="summary">${data.summary}</div>
+      <div slot="details">${data.details}</div>
+    </snt-accordion>
   `)
 }
 
 const insertContent = function (editor, data) {
+
   editor.focus();
 
   const selectedNode = editor.selection.getNode();
-  const accordion = selectedNode.closest('details');
+  const accordion = selectedNode.closest('snt-accordion');
 
   if(accordion) {
       console.dir(data);
-      accordion.querySelector('.summary').innerText = data.summary;
-      accordion.querySelector('.details').innerText = data.details;
+      accordion.querySelector('[slot=summary]').innerText = data.summary;
+      accordion.querySelector('[slot=details]').innerText = data.details;
 
   } else {
     const html = getHtml(data);
@@ -27,10 +28,12 @@ const insertContent = function (editor, data) {
 
 
 const getContent = function (editor) {
+  
   const selectedNode = editor.selection.getNode();
-  const accordion = selectedNode.closest('details');
-  const summary = accordion ? accordion.querySelector('.summary').innerText : '';
-  const details = accordion ? accordion.querySelector('.details').innerText : '';
+  const accordion = selectedNode.closest('snt-accordion');
+  const summary = accordion ? accordion.querySelector('[slot=summary]').innerText : '';
+  const details = accordion ? accordion.querySelector('[slot=details]').innerText : '';
+  
   return {
     summary: summary,
     details: details
@@ -41,3 +44,11 @@ export default {
   getContent,
   insertContent
 };
+
+/*
+
+    <!--details>
+      <summary class="summary">${data.summary}</summary>
+      <span class="details">${data.details}</span>
+    </details-->
+    */

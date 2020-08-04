@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="../../../node_modules/tinymce/tinymce.js"></script>
   <script src="../../../scratch/compiled/demo.js"></script>
+  <!-- Stencil Components -->
+  <script nomodule="" src="../../../../stencil_components/sonnet.js"></script>
+    <script type="module" src="../../../../stencil_components/p-870020b5.js" data-resources-url="/build/"
+        data-stencil-namespace="sonnet"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.min.js"></script>
+    <link rel="preload" as="style" href="../../../../stencil_components/p-4e367d91.css">
+    <link rel="stylesheet" href="../../../../stencil_components/sonnet.css">
 </head>
 <body>
 
@@ -24,6 +31,10 @@
       After <a href="#">Link</a>
     </p>
   </textarea>
-
+  <h1>AccordionTest</h1>
+  <snt-accordion class="faq-accordion">
+    <div slot="summary">Heading</div>
+    <div slot="details"> Lorem ipsum dolor samet.</div>
+</snt-accordion>
 </body>
 </html>
