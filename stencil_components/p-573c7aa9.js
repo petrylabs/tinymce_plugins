@@ -1,1 +1,0 @@
-class t{static async getObjectReference(t,e){return e||(e=await __sc_import_sonnet("./p-45ec9a04.js")),t.split(".").reduce((function(e,r){const n=e[r];if(n)return n;throw Error(`Argument value with value ${t} does not exist.`)}),e)}}export{t as R}

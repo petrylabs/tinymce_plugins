@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>accordion demo page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="../../../node_modules/tinymce/tinymce.js"></script>
+  <script src="../../../scratch/compiled/demo.js"></script>
+  <script src="/assets/js/stencil_components/dist/sonnet.js"></script>
+  <style>
+    main {
+      display: flex;
+    }
+    main > section {
+      padding: 1rem;
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <section>
+      <h2>Editor</h2>
+      <textarea class="tinymce">
+        Initial Value
+      </textarea>
+    </section>
+    <section>
+      <h2>Preview</h2>
+      <article id="preview">
+        <!-- Dynamically Populated -->
+        <p>test</p>
+      </article>
+    </section>
+  </div>
+</body>
+</html>

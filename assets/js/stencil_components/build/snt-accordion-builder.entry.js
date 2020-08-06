@@ -1,0 +1,34 @@
+import { r as registerInstance, h } from './index-21c05bc9.js';
+import './StringUtils-617c552f.js';
+import './WebUtils-c0d293ee.js';
+import './accordion-component-4824bbb1.js';
+import { A as AccordionComponentBuilder, H as HtmlElementBuilder } from './HtmlElementBuilder-e1520c51.js';
+
+const AccordionBuilderComponent = class {
+    constructor(hostRef) {
+        registerInstance(this, hostRef);
+    }
+    buildAccordions() {
+        const accordions = document.createDocumentFragment();
+        const accordion = AccordionComponentBuilder.newInstance()
+            .withSummary(HtmlElementBuilder.newInstance()
+            .withTag("strong")
+            .withInnerText("Accordion 1 Title")
+            .build())
+            .withDetails(HtmlElementBuilder.newInstance()
+            .withTag("p")
+            .withInnerText("Lorem Ipsum Dolor Samet")
+            .build())
+            .build();
+        accordions.appendChild(accordion);
+        return accordions;
+    }
+    render() {
+        return ([
+            h("div", { ref: (nodeElement) => { nodeElement.append(this.buildAccordions()); } })
+        ]);
+    }
+};
+AccordionBuilderComponent.TAG_NAME = "snt-accordion-builder";
+
+export { AccordionBuilderComponent as snt_accordion_builder };

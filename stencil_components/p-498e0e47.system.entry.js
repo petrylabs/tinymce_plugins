@@ -1,1 +1,0 @@
-System.register(["./p-64b22a95.system.js"],(function(t){"use strict";var e;return{setters:[function(t){e=t.r}],execute:function(){var n=t("snt_viewport",function(){function t(t){e(this,t);this.name="";this.devices="";this.height="";this.spacing=""}t.prototype.render=function(){};return t}())}}}));

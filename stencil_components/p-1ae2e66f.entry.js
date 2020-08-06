@@ -1,1 +1,0 @@
-import{r as t,h as e}from"./p-8a8b139b.js";const r=class{constructor(e){t(this,e)}render(){return[e("div",{class:"col-6"},e("snt-breadcrumb",{trail:'[{"title": "test", "href": "/test" },{ "title": "miguel", "href": "/test/miguel"},{ "title": "Current Page", "href": ""}]'}))]}};export{r as breadcrumb_example}
