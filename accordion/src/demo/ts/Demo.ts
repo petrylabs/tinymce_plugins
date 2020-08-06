@@ -6,7 +6,7 @@ declare let document: any;
 Plugin();
 
 document.addEventListener('DOMContentLoaded', (event) => {
-  console.log('DOMContentLoaded');
+  // console.log('DOMContentLoaded');
   tinymce.init({
     selector: 'textarea.tinymce',
     plugins: 'code anchor accordion',
@@ -14,13 +14,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
     valid_elements: '*[*]',
     custom_elements: 'snt-accordion',
     init_instance_callback: (editor) => {
-      console.log(`Editor: ${editor.id} is now initialized`);
+      // console.log(`Editor: ${editor.id} is now initialized`);
     },
-    setup: function(editor) {
-      editor.on('init', function(e) {
+    setup: (editor) => {
+      editor.on('init', (e) => {
         // tinymce.activeEditor.getContent();
       });
-      editor.on('Change', function(e) {
+      editor.on('Change', (e) => {
         // tinymce.activeEditor.getContent();
       });
     }

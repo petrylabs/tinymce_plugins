@@ -5,27 +5,25 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-const isAnchorNode = function (node) {
+  const isAnchorNode = function (node) {
     return !node.attr('href') && (node.attr('id') || node.attr('name')) && !node.firstChild;
   };
-  
+
   const setContentEditable = function (state) {
     return function (nodes) {
-      for (let i = 0; i < nodes.length; i++) {
-        if (isAnchorNode(nodes[i])) {
-          nodes[i].attr('contenteditable', state);
+      for (const node in nodes) {
+        if (isAnchorNode(node)) {
+          (node as any).attr('contenteditable', state);
         }
       }
     };
   };
-  
   const setup = function (editor) {
     editor.on('PreInit', function () {
       editor.parser.addNodeFilter('a', setContentEditable('false'));
       editor.serializer.addNodeFilter('a', setContentEditable(null));
     });
   };
-  
   export default {
     setup
   };

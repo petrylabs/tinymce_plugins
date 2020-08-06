@@ -13,7 +13,7 @@ const open = function (editor) {
   const minHeight = Settings.getMinHeight(editor);
 
   const win = editor.windowManager.open({
-    title: 'Accordion',
+    title: 'SntAccordion',
     body:
     {
       title: 'General',
@@ -54,4 +54,4 @@ const open = function (editor) {
 
 export default {
   open
-}; //test123
+};

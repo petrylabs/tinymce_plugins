@@ -4,8 +4,8 @@ const getHtml = function (data) {
       <div slot="summary">${data.summary}</div>
       <div slot="details">${data.details}</div>
     </snt-accordion>
-  `)
-}
+  `);
+};
 
 const insertContent = function (editor, data) {
 
@@ -14,8 +14,8 @@ const insertContent = function (editor, data) {
   const selectedNode = editor.selection.getNode();
   const accordion = selectedNode.closest('snt-accordion');
 
-  if(accordion) {
-      console.dir(data);
+  if (accordion) {
+      // console.dir(data);
       accordion.querySelector('[slot=summary]').innerText = data.summary;
       accordion.querySelector('[slot=details]').innerText = data.details;
 
@@ -23,32 +23,19 @@ const insertContent = function (editor, data) {
     const html = getHtml(data);
     editor.insertContent(html);
   }
-}
-
-
+};
 
 const getContent = function (editor) {
-  
   const selectedNode = editor.selection.getNode();
   const accordion = selectedNode.closest('snt-accordion');
   const summary = accordion ? accordion.querySelector('[slot=summary]').innerText : '';
   const details = accordion ? accordion.querySelector('[slot=details]').innerText : '';
-  
   return {
-    summary: summary,
-    details: details
-  }
+    summary,
+    details
+  };
 };
-
 export default {
   getContent,
   insertContent
 };
-
-/*
-
-    <!--details>
-      <summary class="summary">${data.summary}</summary>
-      <span class="details">${data.details}</span>
-    </details-->
-    */

@@ -12,7 +12,7 @@ const getMinWidth = function (editor) {
 };
 
 const getMinHeight = function (editor) {
-  return editor.getParam('code_dialog_height', 
+  return editor.getParam('code_dialog_height',
   Math.min(tinymce.dom.DOMUtils.DOM.getViewPort().h - 1, 200));
 };
 

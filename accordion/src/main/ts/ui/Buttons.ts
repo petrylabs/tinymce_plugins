@@ -8,15 +8,15 @@
 import Dialog from './Dialog';
 
 const register = function (editor) {
-  editor.addButton('accordion', {
-    text: 'Snt-Accordion', //icon: 'code', tooltip: 'Source code',
+  editor.addButton('snt-accordion', {
+    text: 'SntAccordion', // icon: 'code', tooltip: 'Source code',
     onclick () {
       Dialog.open(editor);
     }
   });
 
   editor.addMenuItem('accordion', {
-    text: 'Snt-Accordion', 
+    text: 'SntAccordion',
     onclick () {
       Dialog.open(editor);
     }

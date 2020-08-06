@@ -6,7 +6,6 @@ import Dialog from './ui/Dialog';
 declare const tinymce: any;
 
 const setup = (editor) => {
-  
   Commands.register(editor);
   Buttons.register(editor);
 
@@ -15,9 +14,8 @@ const setup = (editor) => {
       Dialog.open(editor);
     }
   });
-  return {}
-}
-
-export default () => { 
-  tinymce.PluginManager.add('accordion', setup);
-}
+  return {};
+};
+export default () => {
+  tinymce.PluginManager.add('snt-accordion', setup);
+};
