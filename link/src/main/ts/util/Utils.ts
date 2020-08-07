@@ -5,25 +5,26 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import Tools from 'tinymce/core/api/util/Tools';
 import Settings from '../api/Settings';
+
+declare const tinymce: any;
 
 const toggleTargetRules = function (rel, isUnsafe) {
   const rules = ['noopener'];
   let newRel = rel ? rel.split(/\s+/) : [];
 
-  const toString = function (rel) {
-    return Tools.trim(rel.sort().join(' '));
+  const toString = function (relStr) {
+    return tinymce.util.Tools.trim(relStr.sort().join(' '));
   };
 
-  const addTargetRules = function (rel) {
-    rel = removeTargetRules(rel);
-    return rel.length ? rel.concat(rules) : rules;
+  const addTargetRules = function (relStr) {
+    relStr = removeTargetRules(relStr);
+    return relStr.length ? relStr.concat(rules) : rules;
   };
 
-  const removeTargetRules = function (rel) {
-    return rel.filter(function (val) {
-      return Tools.inArray(rules, val) === -1;
+  const removeTargetRules = function (relStr) {
+    return relStr.filter(function (val) {
+      return tinymce.util.Tools.inArray(rules, val) === -1;
     });
   };
 
@@ -55,7 +56,7 @@ const isLink = function (elm) {
 };
 
 const hasLinks = function (elements) {
-  return Tools.grep(elements, isLink).length > 0;
+  return tinymce.util.Tools.grep(elements, isLink).length > 0;
 };
 
 const isOnlyTextSelected = function (html) {
@@ -136,7 +137,8 @@ const unlink = function (editor) {
 };
 
 const unlinkImageFigure = function (editor, fig) {
-  let a, img;
+  let a;
+  let img;
   img = editor.dom.select('img', fig)[0];
   if (img) {
     a = editor.dom.getParents(img, 'a[href]', fig)[0];
@@ -148,7 +150,8 @@ const unlinkImageFigure = function (editor, fig) {
 };
 
 const linkImageFigure = function (editor, fig, attrs) {
-  let a, img;
+  let a;
+  let img;
   img = editor.dom.select('img', fig)[0];
   if (img) {
     a = editor.dom.create('a', attrs);

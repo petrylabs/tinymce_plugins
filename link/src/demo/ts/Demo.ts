@@ -7,7 +7,6 @@ let preview: any;
 
 Plugin();
 
-
 tinymce.init({
   selector: 'textarea.tinymce',
   plugins: 'code snt-link',
@@ -15,17 +14,17 @@ tinymce.init({
   valid_elements: '*[*]',
   custom_elements: '~custom, ~snt-accordion, ~snt-link',
   init_instance_callback: (instance) => {
-      const scriptLoader = new tinymce.dom.ScriptLoader();
-      //scriptLoader.add('/assets/js/stencil_components/dist/sonnet.js');
-      //scriptLoader.loadQueue(() => console.log('script loaded'));
+      // const scriptLoader = new tinymce.dom.ScriptLoader();
+      // scriptLoader.add('/assets/js/stencil_components/dist/sonnet.js');
+      // scriptLoader.loadQueue(() => console.log('script loaded'));
   },
-  setup: function(editor) {
-    editor.on('init', function(e) {
+  setup: (editor) => {
+    editor.on('init', (e) => {
         preview = document.querySelector('#preview');
-        console.log('preview', preview);
+        // console.log('preview', preview);
     });
-    editor.on('Change', function(e) {
-        console.log('The Editor content has changed...');
+    editor.on('Change', (e) => {
+        // console.log('The Editor content has changed...');
         const content = tinymce.activeEditor.getContent();
         preview.innerHTML = content;
     });

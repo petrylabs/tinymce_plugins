@@ -4,12 +4,12 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  */
-
-import VK from 'tinymce/core/api/util/VK';
 import Settings from '../api/Settings';
 import OpenUrl from './OpenUrl';
-import Utils from './Utils';
+import Utils from '../util/Utils';
 import Dialog from '../ui/Dialog';
+
+declare const tinymce: any;
 
 const getLink = function (editor, elm) {
   return editor.dom.getParent(elm, 'a[href]');
@@ -62,7 +62,9 @@ const gotoSelectedLink = function (editor) {
 
 const leftClickedOnAHref = function (editor) {
   return function (elm) {
-    let sel, rng, node;
+    let sel;
+    let rng;
+    let node;
     if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isLink(elm)) {
       sel = editor.selection;
       rng = sel.getRng();
@@ -79,7 +81,7 @@ const leftClickedOnAHref = function (editor) {
 const setupGotoLinks = function (editor) {
   editor.on('click', function (e) {
     const link = getLink(editor, e.target);
-    if (link && VK.metaKeyPressed(e)) {
+    if (link && tinymce.util.VK.metaKeyPressed(e)) {
       e.preventDefault();
       gotoLink(editor, link);
     }
