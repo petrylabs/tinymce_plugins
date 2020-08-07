@@ -1,20 +1,17 @@
 import Commands from './api/Commands';
-import Buttons from './ui/Buttons';
-import Utils from './util/Utils';
-import Dialog from './ui/Dialog';
+import Actions from './core/Actions';
+import Keyboard from './core/Keyboard';
+import Controls from './ui/Controls';
 
 declare const tinymce: any;
 
 const setup = (editor) => {
+  Controls.setupButtons(editor);
+  Controls.setupMenuItems(editor);
+  Controls.setupContextToolbars(editor);
+  Actions.setupGotoLinks(editor);
   Commands.register(editor);
-  Buttons.register(editor);
-
-  editor.on('dblclick', function (ev) {
-    if (Utils.isAccordion(ev.target)) {
-      Dialog.open(editor);
-    }
-  });
-  return {};
+  Keyboard.setup(editor);
 };
 export default () => {
   tinymce.PluginManager.add('snt-link', setup);

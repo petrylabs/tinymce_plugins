@@ -5,12 +5,12 @@
  * For commercial licenses see https://www.tiny.cloud/
  */
 
-import Actions from '../core/Actions';
+import Actions from './Actions';
 
-const register = function (editor) {
-  editor.addCommand('mceLink', Actions.openDialog(editor));
+const setup = function (editor) {
+  editor.addShortcut('Meta+K', '', Actions.openDialog(editor));
 };
 
 export default {
-  register
+  setup
 };
