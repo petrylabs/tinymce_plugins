@@ -9,43 +9,59 @@ import Actions from '../core/Actions';
 import Utils from '../util/Utils';
 
 const setupButtons = function (editor) {
-  editor.addButton('link', {
+  /**
+   * Add SntLink button to toolbar
+   */
+  editor.addButton('snt-link', {
     active: false,
     icon: 'link',
-    tooltip: 'Insert/edit link',
+    text: 'SntLink',
+    tooltip: 'Insert / Edit SntLink',
     onclick: Actions.openDialog(editor),
     onpostrender: Actions.toggleActiveState(editor)
   });
 
-  editor.addButton('unlink', {
+  /**
+   * Add Unlink button to toolbar
+   */
+  editor.addButton('snt-unlink', {
     active: false,
     icon: 'unlink',
-    tooltip: 'Remove link',
+    text: 'Remove SntLink',
+    tooltip: 'Remove SntLink',
     onclick: Utils.unlink(editor),
-    onpostrender: Actions.toggleActiveState(editor)
+    //onpostrender: Actions.toggleActiveState(editor)
   });
 
-  if (editor.addContextToolbar) {
-    editor.addButton('openlink', {
-      icon: 'newtab',
-      tooltip: 'Open link',
-      onclick: Actions.gotoSelectedLink(editor)
-    });
-  }
+  // if (editor.addContextToolbar) {
+  //   editor.addButton('openlink', {
+  //     text: 'Open SntLink (10)',
+  //     icon: 'newtab',
+  //     tooltip: '',
+  //     onclick: Actions.gotoSelectedLink(editor)
+  //   });
+  // }
 };
 
 const setupMenuItems = function (editor) {
+
+  /**
+   * Context Menu (Right-click) Open Link Option
+   */
   editor.addMenuItem('openlink', {
-    text: 'Open link',
+    text: 'Open SntLink',
     icon: 'newtab',
     onclick: Actions.gotoSelectedLink(editor),
-    onPostRender: Actions.toggleViewLinkState(editor),
+    // onPostRender: Actions.toggleViewLinkState(editor),
     prependToContext: true
-  });
+  });  
 
-  editor.addMenuItem('link', {
+  /**
+   * Menu Insert -> Link
+   */
+  editor.addMenuItem('SntLink', {
     icon: 'link',
-    text: 'Link',
+    text: 'SntLink',
     shortcut: 'Meta+K',
     onclick: Actions.openDialog(editor),
     stateSelector: 'a[href]',
@@ -53,25 +69,25 @@ const setupMenuItems = function (editor) {
     prependToContext: true
   });
 
-  editor.addMenuItem('unlink', {
-    icon: 'unlink',
-    text: 'Remove link',
-    onclick: Utils.unlink(editor),
-    stateSelector: 'a[href]'
-  });
+  // editor.addMenuItem('unlink', {
+  //   icon: 'unlink',
+  //   text: 'Remove link',
+  //   onclick: Utils.unlink(editor),
+  //   stateSelector: 'a[href]'
+  // });
 };
 
-const setupContextToolbars = function (editor) {
-  if (editor.addContextToolbar) {
-    editor.addContextToolbar(
-      Actions.leftClickedOnAHref(editor),
-      'openlink | link unlink'
-    );
-  }
-};
+// const setupContextToolbars = function (editor) {
+//   if (editor.addContextToolbar) {
+//     editor.addContextToolbar(
+//       Actions.leftClickedOnAHref(editor),
+//       'openlink | link unlink'
+//     );
+//   }
+// };
 
 export default {
   setupButtons,
   setupMenuItems,
-  setupContextToolbars
+  //setupContextToolbars
 };

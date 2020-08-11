@@ -72,6 +72,11 @@ const isImageFigure = function (node) {
   return node && node.nodeName === 'FIGURE' && /\bimage\b/i.test(node.className);
 };
 
+/**
+ * 
+ * @param editor 
+ * @param attachState 
+ */
 const link = function (editor, attachState) {
   return function (data) {
     editor.undoManager.transact(function () {
@@ -111,12 +116,18 @@ const link = function (editor, attachState) {
         editor.selection.select(anchorElm);
         editor.undoManager.add();
       } else {
+        console.log('Utils.ts:119 linkAttrs', linkAttrs);
         if (isImageFigure(selectedElm)) {
           linkImageFigure(editor, selectedElm, linkAttrs);
-        } else if (data.hasOwnProperty('text')) {
-          editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(data.text)));
-        } else {
-          editor.execCommand('mceInsertLink', false, linkAttrs);
+        } 
+        else if (data.hasOwnProperty('text')) {
+          // editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(data.text)));
+          const textData = editor.dom.encode(data.text);
+          editor.insertContent(editor.dom.createHTML('snt-link', linkAttrs, textData));
+        } 
+        else {
+          // editor.execCommand('mceInsertLink', false, linkAttrs);
+          editor.execCommand('mceInsertSntLink', false, linkAttrs);
         }
       }
     });

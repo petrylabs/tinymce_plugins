@@ -9,22 +9,42 @@ Plugin();
 
 tinymce.init({
   selector: 'textarea.tinymce',
-  plugins: 'code snt-link',
-  toolbar: 'snt-link',
+  plugins: 'contextmenu code anchor snt-link contextmenu image',
+  toolbar: 'code anchor snt-link snt-unlink image',
   valid_elements: '*[*]',
-  custom_elements: '~custom, ~snt-accordion, ~snt-link',
-  init_instance_callback: (instance) => {
-      // const scriptLoader = new tinymce.dom.ScriptLoader();
-      // scriptLoader.add('/assets/js/stencil_components/dist/sonnet.js');
-      // scriptLoader.loadQueue(() => console.log('script loaded'));
-  },
+  extended_valid_elements: 'snt-link[*]',
+  custom_elements: '~snt-link',
+  content_css: '/assets/css/wysiwyg_styles.css?bogus=' + new Date().getTime(),
+  height: 600,
+  link_class_list: [
+    {title: 'None', value: ''},
+    {title: 'Class A', value: 'class-a'},
+    {title: 'Calss B', value: 'class-b'}
+  ],
+  target_list: [
+    {title: 'None', value: ''},
+    {title: 'Same page', value: '_self'},
+    {title: 'New page', value: '_blank'},
+    {title: 'Lightbox', value: '_lightbox'}
+  ],
+  rel_list: [
+    {title: 'None', value: ''},
+    {title: 'Lightbox', value: 'lightbox'},
+    {title: 'Table of contents', value: 'toc'}
+  ],
+  link_list: [
+    {title: '1. Page One', value: 'https://www.sonnet.ca/?page=one'},
+    {title: '2. Page Two', value: 'https://www.sonnet.ca/?page=one'},
+    {title: '3. Page Three', value: 'https://www.sonnet.ca/?page=three'}
+  ],
+  init_instance_callback: (instance) => {},
   setup: (editor) => {
     editor.on('init', (e) => {
+        const content = tinymce.activeEditor.getContent();
         preview = document.querySelector('#preview');
-        // console.log('preview', preview);
+        preview.innerHTML = content;
     });
     editor.on('Change', (e) => {
-        // console.log('The Editor content has changed...');
         const content = tinymce.activeEditor.getContent();
         preview.innerHTML = content;
     });

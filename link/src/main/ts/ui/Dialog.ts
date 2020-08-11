@@ -12,6 +12,12 @@ declare const tinymce: any;
 
 let attachState = {};
 
+/**
+ * Creates link list based on link_list settings parameter.
+ * {@link https://www.tiny.cloud/docs-4x/plugins/link/#link_list|TinyMCE Docs}
+ * @param {Object} editor - Editor description
+ * @param {Function} callback - Callback description
+ */
 const createLinkList = function (editor, callback) {
   const linkList = Settings.getLinkList(editor.settings);
 
@@ -31,11 +37,18 @@ const createLinkList = function (editor, callback) {
   }
 };
 
+/**
+ * Builds link list based on link_list settings parameter.
+ * {@link https://www.tiny.cloud/docs-4x/plugins/link/#link_list|TinyMCE Docs}
+ * @param inputList 
+ * @param itemCallback 
+ * @param startItems 
+ */
 const buildListItems = function (inputList, itemCallback?, startItems?) {
   const appendItems = function (values, output?) {
     output = output || [];
 
-    tinymce.util.Toolseach(values, function (item) {
+    tinymce.util.Tools.each(values, function (item) {
       const menuItem: any = { text: item.text || item.title };
 
       if (item.menu) {
@@ -73,6 +86,7 @@ const showDialog = function (editor, linkList) {
   const data: any = {};
   const selection = editor.selection;
   const dom = editor.dom;
+
   let anchorElm;
   let initialText;
   let win;
@@ -84,6 +98,10 @@ const showDialog = function (editor, linkList) {
   let classListCtrl;
   let linkTitleCtrl;
 
+  /**
+   * Update text control with value from link list.
+   * @param {Event} e - Current event object. 
+   */
   const linkListChangeHandler = function (e) {
     const textCtrl = win.find('#text');
 
@@ -94,10 +112,14 @@ const showDialog = function (editor, linkList) {
     win.find('#href').value(e.control.value());
   };
 
+  /**
+   * Scan the editor dom for anchor tags and build a list control that allows the user to pick one as a link.
+   * @param {string} url - Url field value in the dialog box.
+   */
   const buildAnchorListControl = function (url) {
     const anchorList = [];
 
-    tinymce.util.Toolseach(editor.dom.select('a:not([href])'), function (anchor) {
+    tinymce.util.Tools.each(editor.dom.select('a:not([href])'), function (anchor) {
       const id = anchor.name || anchor.id;
 
       if (id) {
@@ -110,6 +132,7 @@ const showDialog = function (editor, linkList) {
     });
 
     if (anchorList.length) {
+      console.log('url', url, 'anchorList', anchorList);
       anchorList.unshift({ text: 'None', value: '' });
 
       return {
@@ -129,13 +152,14 @@ const showDialog = function (editor, linkList) {
   };
 
   const urlChange = function (e) {
+    
     const meta = e.meta || {};
 
     if (linkListCtrl) {
       linkListCtrl.value(editor.convertURL(this.value(), 'href'));
     }
 
-    tinymce.util.Toolseach(e.meta, function (val, key) {
+    tinymce.util.Tools.each(e.meta, function (val, key) {
       const inp = win.find('#' + key);
 
       if (key === 'text') {
@@ -176,20 +200,9 @@ const showDialog = function (editor, linkList) {
     data.target = Settings.getDefaultLinkTarget(editor.settings);
   }
 
-  const relValue = dom.getAttrib(anchorElm, 'rel');
-  if (relValue) {
-    data.rel = relValue;
-  }
-
-  const classValue = dom.getAttrib(anchorElm, 'class');
-  if (classValue) {
-    data.class = classValue;
-  }
-
-  const titleValue = dom.getAttrib(anchorElm, 'title');
-  if (titleValue) {
-    data.title = titleValue;
-  }
+  data.rel = dom.getAttrib(anchorElm, 'rel') || null;
+  data.class = dom.getAttrib(anchorElm, 'class') || null;
+  data.title = dom.getAttrib(anchorElm, 'title') || null;
 
   if (onlyText) {
     textListCtrl = {
@@ -283,7 +296,7 @@ const showDialog = function (editor, linkList) {
   }
 
   win = editor.windowManager.open({
-    title: 'Insert link',
+    title: 'Insert SntLink',
     data,
     body: [
       {
@@ -311,7 +324,7 @@ const showDialog = function (editor, linkList) {
       const insertLink = Utils.link(editor, attachState);
       const removeLink = Utils.unlink(editor);
 
-      const resultData = tinymce.util.Toolsextend({}, data, e.data);
+      const resultData = tinymce.util.Tools.extend({}, data, e.data);
       /*eslint dot-notation: 0*/
       const href = resultData.href;
 
