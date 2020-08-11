@@ -4,23 +4,29 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  */
-// import Settings from '../api/Settings';
+import Settings from '../api/Settings';
 import OpenUrl from './OpenUrl';
 import Utils from '../util/Utils';
 import Dialog from '../ui/Dialog';
 
 declare const tinymce: any;
 
-const getLink = function (editor, elm) {
-  const link = editor.dom.getParent(elm, 'a[href]');
-  console.log('link', link);
+/**
+ * Get snt-link Element
+ * @param editor 
+ * @param elm 
+ * @returns {HTMLElement}
+ */
+const getSntLink = function (editor, elm) {
+  const link = editor.dom.getParent(elm, 'snt-link[href]');
+  console.log('snt-link', link);
   return link;
 };
 
-const getSelectedLink = function (editor) {
+const getSelectedSntLink = function (editor) {
   const selection = editor.selection.getStart();
   console.log('selection', selection);
-  const selectedLink = getLink(editor, selection);
+  const selectedLink = getSntLink(editor, selection);
   console.log('selectedLink', selectedLink);
   return selectedLink;
 };
@@ -31,25 +37,31 @@ const getHref = function (elm) {
   return href ? href : elm.getAttribute('href');
 };
 
-// const isContextMenuVisible = function (editor) {
-//   const contextmenu = editor.plugins.contextmenu;
-//   return contextmenu ? contextmenu.isContextMenuVisible() : false;
-// };
+const isContextMenuVisible = function (editor) {
+  const contextmenu = editor.plugins.contextmenu;
+  return contextmenu ? contextmenu.isContextMenuVisible() : false;
+};
 
 const hasOnlyAltModifier = function (e) {
   return e.altKey === true && e.shiftKey === false && e.ctrlKey === false && e.metaKey === false;
 };
 
-const gotoLink = function (editor, a) {
-  if (a) {
-    const href = getHref(a);
+/**
+ * Check if hyperlink or anchor and take appropriate action 
+ * @param {Object} editor 
+ * @param {HTMLElement} sntLink
+ * @returns {Void} 
+ */
+const gotoLink = function (editor, sntLink) {
+  if (sntLink) {
+    const href = getHref(sntLink);
     if (/^#/.test(href)) {
       const targetEl = editor.$(href);
       if (targetEl.length) {
         editor.selection.scrollIntoView(targetEl[0], true);
       }
     } else {
-      OpenUrl.open(a.href);
+      OpenUrl.open(sntLink.getAttribute('href'));
     }
   }
 };
@@ -60,33 +72,39 @@ const openDialog = function (editor) {
   };
 };
 
+/**
+ * Return gotoLink function callback
+ * @param {Object} editor
+ * @returns {Function}
+ */
 const gotoSelectedLink = function (editor) {
   return function () {
-    gotoLink(editor, getSelectedLink(editor));
+    gotoLink(editor, getSelectedSntLink(editor));
   };
 };
 
-// const leftClickedOnAHref = function (editor) {
-//   return function (elm) {
-//     console.log('function leftClickedOnAHref called');
-//     let sel;
-//     let rng;
-//     let node;
-//     console.log('hasContextToolbar? ', Settings.hasContextToolbar(editor.settings));
-//     console.log('isContextMneuVisible', isContextMenuVisible(editor) );
-//     console.log('isSntLink?', Utils.isSntLink(elm));
-//     if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isSntLink(elm)) {
-//       sel = editor.selection;
-//       rng = sel.getRng();
-//       node = rng.startContainer;
-//       // ignore cursor positions at the beginning/end (to make context toolbar less noisy)
-//       if (node.nodeType === 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
-//         return true;
-//       }
-//     }
-//     return false;
-//   };
-// };
+const leftClickedOnAHref = function (editor) {
+  return function (elm) {
+    let sel;
+    let rng;
+    let node;
+    console.log('Settings.hasContextToolbar(editor.settings)', Settings.hasContextToolbar(editor.settings));
+    console.log('!isContextMenuVisible(editor)',!isContextMenuVisible(editor));
+    console.log('Utils.isSntLink(elm)', Utils.isSntLink(elm));
+    if (Settings.hasContextToolbar(editor.settings) && 
+    !isContextMenuVisible(editor) && 
+    Utils.isSntLink(elm)) {
+      sel = editor.selection;
+      rng = sel.getRng();
+      node = rng.startContainer;
+      // ignore cursor positions at the beginning/end (to make context toolbar less noisy)
+      if (node.nodeType === 3 && sel.isCollapsed() && rng.startOffset > 0 && rng.startOffset < node.data.length) {
+        return true;
+      }
+    }
+    return false;
+  };
+};
 
 /**
  * Open link in a new tab on CTRL + CLICK
@@ -95,7 +113,7 @@ const gotoSelectedLink = function (editor) {
 const setupGotoLinks = function (editor) {
   editor.on('click', function (e) {
     if (tinymce.util.VK.metaKeyPressed(e)) {
-      const link = getLink(editor, e.target);
+      const link = getSntLink(editor, e.target);
       if(link) {
         e.preventDefault();
         gotoLink(editor, link);
@@ -108,7 +126,7 @@ const setupGotoLinks = function (editor) {
    */
   editor.on('keydown', function (e) {
     if (e.keyCode === 13 && hasOnlyAltModifier(e)) {
-      const link = getSelectedLink(editor);
+      const link = getSelectedSntLink(editor);
       if(link) {
         e.preventDefault();
         gotoLink(editor, link);
@@ -210,7 +228,7 @@ const insertSntLink = function(editor) {
 export default {
   openDialog,
   gotoSelectedLink,
-  // leftClickedOnAHref,
+  leftClickedOnAHref,
   setupGotoLinks,
   toggleActiveState,
   // toggleViewLinkState,

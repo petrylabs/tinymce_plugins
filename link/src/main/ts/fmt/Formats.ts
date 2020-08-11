@@ -16,17 +16,13 @@ const setup = function (editor) {
     split: true, 
     deep: true,
     styles: {
-      // color: '#ff0000'
+      // key: 'value'
     },
     onmatch () {
-      // console.log('onmatch');
       return true;
     },
     onformat (elm, fmt, vars) {
-      // console.log('onformat');
-      // console.log('elm', elm, 'fmt', fmt, 'vars', vars);
       tinymce.util.Tools.each(vars, function (value, key) {
-        // console.log('value', value, 'key', key);
         editor.dom.setAttrib(elm, key, value);
       });
     }

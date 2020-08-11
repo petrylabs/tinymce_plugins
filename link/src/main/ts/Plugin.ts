@@ -9,13 +9,12 @@ declare const tinymce: any;
 const setup = (editor) => {
   Controls.setupButtons(editor);
   Controls.setupMenuItems(editor);
-  //Controls.setupContextToolbars(editor);
+  Controls.setupContextToolbars(editor);
   Actions.setupGotoLinks(editor);
   Commands.register(editor);
   Keyboard.setup(editor);
 
   editor.on('init', (evt) => {
-    // console.log('evt', evt);
     Formats.setup(editor);
   });
 };

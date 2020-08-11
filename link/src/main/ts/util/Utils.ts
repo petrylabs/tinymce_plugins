@@ -9,6 +9,11 @@ import Settings from '../api/Settings';
 
 declare const tinymce: any;
 
+/**
+ * Toggle [rel=noopener] 
+ * @param rel 
+ * @param {boolean} isUnsafe 
+ */
 const toggleTargetRules = function (rel, isUnsafe) {
   const rules = ['noopener'];
   let newRel = rel ? rel.split(/\s+/) : [];
@@ -32,6 +37,11 @@ const toggleTargetRules = function (rel, isUnsafe) {
   return newRel.length ? toString(newRel) : null;
 };
 
+/**
+ * Remove byte order mark
+ * @param {Object} text
+ * @returns {String} 
+ */
 const trimCaretContainers = function (text) {
   return text.replace(/\uFEFF/g, '');
 };
@@ -69,7 +79,8 @@ const getSntLinkText = function (selection, sntLinkElm) {
  * @returns {boolean}
  */
 const isSntLink = function (elm) {
-  return elm && elm.nodeName === 'A' && elm.href;
+  console.log('elm', elm);
+  return elm && elm.nodeName === 'SNT-LINK' && elm.getAttribute('href');
 };
 
 /**
