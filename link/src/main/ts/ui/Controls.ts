@@ -9,9 +9,6 @@ import Actions from '../core/Actions';
 import Utils from '../util/Utils';
 
 const setupButtons = function (editor) {
-  /**
-   * Add SntLink button to toolbar
-   */
   editor.addButton('snt-link', {
     active: false,
     icon: 'link',
@@ -20,10 +17,6 @@ const setupButtons = function (editor) {
     onclick: Actions.openDialog(editor),
     onpostrender: Actions.toggleActiveState(editor)
   });
-
-  /**
-   * Add Unlink button to toolbar
-   */
   editor.addButton('snt-unlink', {
     active: false,
     icon: 'unlink',
@@ -32,9 +25,6 @@ const setupButtons = function (editor) {
     onclick: Utils.sntUnlink(editor),
     onpostrender: Actions.toggleActiveState(editor)
   });
-  /**
-   * DESCRIPTION
-   */
   if (editor.addContextToolbar) {
     editor.addButton('snt-openlink', {
       icon: 'newtab',
@@ -45,9 +35,6 @@ const setupButtons = function (editor) {
 };
 
 const setupMenuItems = function (editor) {
-  /**
-   * DESCRIPTION
-   */
   editor.addMenuItem('snt-openlink', {
     text: 'Open SntLink',
     icon: 'newtab',
@@ -55,9 +42,6 @@ const setupMenuItems = function (editor) {
     onPostRender: Actions.toggleViewLinkState(editor),
     prependToContext: true
   });
-  /**
-   * DESCRIPTION
-   */
   editor.addMenuItem('snt-link', {
     icon: 'link',
     text: 'SntLink',
@@ -67,9 +51,6 @@ const setupMenuItems = function (editor) {
     context: 'insert',
     prependToContext: true
   });
-  /**
-   * DESCRIPTION
-   */
   editor.addMenuItem('unlink', {
     icon: 'unlink',
     text: 'Remove SntLink',

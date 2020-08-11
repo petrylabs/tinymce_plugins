@@ -6,6 +6,10 @@ import Formats from './fmt/Formats';
 
 declare const tinymce: any;
 
+/**
+ * 
+ * @param editor 
+ */
 const setup = (editor) => {
   Controls.setupButtons(editor);
   Controls.setupMenuItems(editor);
