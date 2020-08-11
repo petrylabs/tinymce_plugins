@@ -189,9 +189,10 @@ const showDialog = function (editor, linkList) {
   };
 
   onlyText = Utils.isOnlyTextSelected(selection.getContent());
-  anchorElm = Utils.getAnchorElement(editor);
+  console.log('onlyText?', onlyText);
+  anchorElm = Utils.getSntLinkElement(editor);
 
-  data.text = initialText = Utils.getAnchorText(editor.selection, anchorElm);
+  data.text = initialText = Utils.getSntLinkText(editor.selection, anchorElm);
   data.href = anchorElm ? dom.getAttrib(anchorElm, 'href') : '';
 
   if (anchorElm) {
@@ -321,8 +322,8 @@ const showDialog = function (editor, linkList) {
     ],
     onSubmit (e) {
       const assumeExternalTargets = Settings.assumeExternalTargets(editor.settings);
-      const insertLink = Utils.link(editor, attachState);
-      const removeLink = Utils.unlink(editor);
+      const insertLink = Utils.sntLink(editor, attachState);
+      const removeLink = Utils.sntUnlink(editor);
 
       const resultData = tinymce.util.Tools.extend({}, data, e.data);
       /*eslint dot-notation: 0*/

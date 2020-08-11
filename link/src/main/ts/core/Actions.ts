@@ -74,8 +74,8 @@ const gotoSelectedLink = function (editor) {
 //     let node;
 //     console.log('hasContextToolbar? ', Settings.hasContextToolbar(editor.settings));
 //     console.log('isContextMneuVisible', isContextMenuVisible(editor) );
-//     console.log('isLink?', Utils.isLink(elm));
-//     if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isLink(elm)) {
+//     console.log('isSntLink?', Utils.isSntLink(elm));
+//     if (Settings.hasContextToolbar(editor.settings) && !isContextMenuVisible(editor) && Utils.isSntLink(elm)) {
 //       sel = editor.selection;
 //       rng = sel.getRng();
 //       node = rng.startContainer;
@@ -125,7 +125,7 @@ const toggleActiveState = function (editor) {
   return function () {
     const self = this;
     editor.on('nodechange', function (e) {
-      const condition = (!editor.readonly && !!Utils.getAnchorElement(editor, e.element));
+      const condition = (!editor.readonly && !!Utils.getSntLinkElement(editor, e.element));
       self.active(condition);
     });
   };
@@ -137,14 +137,14 @@ const toggleActiveState = function (editor) {
 //     const self = this;
 
 //     const toggleVisibility = function (e) {
-//       if (Utils.hasLinks(e.parents)) {
+//       if (Utils.hasSntLinks(e.parents)) {
 //         self.show();
 //       } else {
 //         self.hide();
 //       }
 //     };
 
-//     if (!Utils.hasLinks(editor.dom.getParents(editor.selection.getStart()))) {
+//     if (!Utils.hasSntLinks(editor.dom.getParents(editor.selection.getStart()))) {
 //       self.hide();
 //     }
 
@@ -156,11 +156,64 @@ const toggleActiveState = function (editor) {
 //   };
 // };
 
+const removeSntLink = function(editor) {
+  return function() {
+    if (editor.selection.isCollapsed()) {
+      const elm = editor.dom.getParent(editor.selection.getStart(), 'a');
+      if (elm) {
+        editor.dom.remove(elm, true);
+      }
+      return;
+    }
+    editor.formatter.remove('sntlink');
+  }
+};
+
+const insertSntLink = function(editor) {
+  return function(ui, value) {    
+    // let anchor;
+    let sntLink;
+
+    if (typeof value === 'string') {
+      value = { href: value };
+    }
+
+    // anchor = editor.dom.getParent(editor.selection.getNode(), 'a');
+    sntLink = editor.dom.getParent(editor.selection.getNode(), 'snt-link');
+
+    // Spaces are never valid in URLs and it's a very common mistake for people to make so we fix it here.
+    value.href = value.href.replace(' ', '%20');
+
+    console.log('Commands.ts:29 value', value, 'mycustomformat', sntLink);
+
+    // Remove existing links if there could be child links or that the href isn't specified
+    // if (!anchor || !value.href) {
+    if (!sntLink || !value.href) {
+      console.log('>>> Remove format');
+      // editor.formatter.remove('link');
+      editor.formatter.remove('sntlink');
+    }
+
+    // Apply new link to selection
+    if (value.href) {
+      console.log('>>> Apply new link to selection ');
+      if(editor.formatter.get('sntlink')) {
+        // editor.formatter.apply('link', value, sntLink);
+        editor.formatter.apply('sntlink', value);
+      } else {
+        throw new Error('Specified formatter has not been registered!');
+      }
+    }
+  }
+};
+
 export default {
   openDialog,
   gotoSelectedLink,
   // leftClickedOnAHref,
   setupGotoLinks,
   toggleActiveState,
-  // toggleViewLinkState
+  // toggleViewLinkState,
+  removeSntLink,
+  insertSntLink
 };

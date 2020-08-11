@@ -7,7 +7,7 @@
 
 declare const tinymce: any;
 
-const setupFormats = function (editor) {    
+const setup = function (editor) {    
 
   editor.formatter.register('sntlink', {
     inline: 'snt-link', 
@@ -34,5 +34,5 @@ const setupFormats = function (editor) {
 }
 
 export default {
-  setupFormats
+  setup
 };

@@ -29,7 +29,7 @@ const setupButtons = function (editor) {
     icon: 'unlink',
     text: 'Remove SntLink',
     tooltip: 'Remove SntLink',
-    onclick: Utils.unlink(editor),
+    onclick: Utils.sntUnlink(editor),
     //onpostrender: Actions.toggleActiveState(editor)
   });
 

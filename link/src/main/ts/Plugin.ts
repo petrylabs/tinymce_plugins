@@ -13,9 +13,11 @@ const setup = (editor) => {
   Actions.setupGotoLinks(editor);
   Commands.register(editor);
   Keyboard.setup(editor);
-  editor.on('init', () => {
-    Formats.setupFormats(editor);
-  })
+
+  editor.on('init', (evt) => {
+    // console.log('evt', evt);
+    Formats.setup(editor);
+  });
 };
 export default () => {
   tinymce.PluginManager.add('snt-link', setup);

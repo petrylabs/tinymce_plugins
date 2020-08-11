@@ -1,0 +1,10 @@
+snt-link, a {
+    padding: 0.125rem;
+    margin: 0.125rem;
+}
+a {
+    outline: 1px dotted green;
+}
+snt-link {
+    outline: 1px dotted red;
+}

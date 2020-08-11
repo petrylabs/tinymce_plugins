@@ -36,52 +36,83 @@ const trimCaretContainers = function (text) {
   return text.replace(/\uFEFF/g, '');
 };
 
-const getAnchorElement = function (editor, selectedElm?) {
+/**
+ * Get selected snt-link HTML element
+ * @param {Onbject} editor
+ * @param {HTMLElement} selectedElm
+ * @returns {HTMLElement}
+ */
+const getSntLinkElement = function (editor, selectedElm?) {
   selectedElm = selectedElm || editor.selection.getNode();
   if (isImageFigure(selectedElm)) {
     // for an image conained in a figure we look for a link inside the selected element
-    return editor.dom.select('a[href]', selectedElm)[0];
+    return editor.dom.select('snt-link[href]', selectedElm)[0];
   } else {
-    return editor.dom.getParent(selectedElm, 'a[href]');
+    return editor.dom.getParent(selectedElm, 'snt-link[href]');
   }
 };
 
-const getAnchorText = function (selection, anchorElm) {
-  const text = anchorElm ? (anchorElm.innerText || anchorElm.textContent) : selection.getContent({ format: 'text' });
+/**
+ * Get text from selected sng-link HTML element
+ * @param {Object} selection 
+ * @param {HTMLElement} sntLinkElm 
+ * @returns {string}
+ */
+const getSntLinkText = function (selection, sntLinkElm) {
+  const text = sntLinkElm ? (sntLinkElm.innerText || sntLinkElm.textContent) : selection.getContent({ format: 'text' });
   return trimCaretContainers(text);
 };
 
-const isLink = function (elm) {
+/**
+ * Check if selected element is an snt-link
+ * @param {HTMLElement} elm
+ * @returns {boolean}
+ */
+const isSntLink = function (elm) {
   return elm && elm.nodeName === 'A' && elm.href;
 };
 
-const hasLinks = function (elements) {
-  return tinymce.util.Tools.grep(elements, isLink).length > 0;
+/**
+ * Check if selected elements contain snt-links
+ * @param {Array<HTMLElement>} elements 
+ * @returns {boolean}
+ */
+const hasSntLinks = function (elements) {
+  return tinymce.util.Tools.grep(elements, isSntLink).length > 0;
 };
 
+/**
+ * Check if partial html and not a fully selected anchor element
+ * @param {string} html
+ * @returns {boolean} 
+ */
 const isOnlyTextSelected = function (html) {
-  // Partial html and not a fully selected anchor element
-  if (/</.test(html) && (!/^<a [^>]+>[^<]+<\/a>$/.test(html) || html.indexOf('href=') === -1)) {
+  if (/</.test(html) && (!/^<snt-link [^>]+>[^<]+<\/snt-link>$/.test(html) || html.indexOf('href=') === -1)) {
     return false;
   }
-
   return true;
 };
 
+/**
+ * Check if selected element is an image
+ * @param {HTMLElement} node 
+ * @returns {boolean}
+ */
 const isImageFigure = function (node) {
   return node && node.nodeName === 'FIGURE' && /\bimage\b/i.test(node.className);
 };
 
 /**
- * 
+ * Set up callback function for inserting snt-link
  * @param editor 
- * @param attachState 
+ * @param attachState
+ * @returns {Function} 
  */
-const link = function (editor, attachState) {
+const sntLink = function (editor, attachState) {
   return function (data) {
     editor.undoManager.transact(function () {
       const selectedElm = editor.selection.getNode();
-      const anchorElm = getAnchorElement(editor, selectedElm);
+      const sntLinkElm = getSntLinkElement(editor, selectedElm);
 
       const linkAttrs = {
         href: data.href,
@@ -100,33 +131,32 @@ const link = function (editor, attachState) {
         attachState = {};
       }
 
-      if (anchorElm) {
+      if (sntLinkElm) {
         editor.focus();
 
         if (data.hasOwnProperty('text')) {
-          if ('innerText' in anchorElm) {
-            anchorElm.innerText = data.text;
+          if ('innerText' in sntLinkElm) {
+            sntLinkElm.innerText = data.text;
           } else {
-            anchorElm.textContent = data.text;
+            sntLinkElm.textContent = data.text;
           }
         }
 
-        editor.dom.setAttribs(anchorElm, linkAttrs);
+        editor.dom.setAttribs(sntLinkElm, linkAttrs);
 
-        editor.selection.select(anchorElm);
+        editor.selection.select(sntLinkElm);
         editor.undoManager.add();
       } else {
-        console.log('Utils.ts:119 linkAttrs', linkAttrs);
+        // console.log('Utils.ts:119 linkAttrs', linkAttrs);
+        debugger;
         if (isImageFigure(selectedElm)) {
-          linkImageFigure(editor, selectedElm, linkAttrs);
+          sntLinkImageFigure(editor, selectedElm, linkAttrs);
         } 
         else if (data.hasOwnProperty('text')) {
-          // editor.insertContent(editor.dom.createHTML('a', linkAttrs, editor.dom.encode(data.text)));
           const textData = editor.dom.encode(data.text);
           editor.insertContent(editor.dom.createHTML('snt-link', linkAttrs, textData));
         } 
         else {
-          // editor.execCommand('mceInsertLink', false, linkAttrs);
           editor.execCommand('mceInsertSntLink', false, linkAttrs);
         }
       }
@@ -134,50 +164,69 @@ const link = function (editor, attachState) {
   };
 };
 
-const unlink = function (editor) {
+/**
+ * Set up callback function for removing snt-link
+ * @param editor 
+ * @returns {Void}
+ */
+const sntUnlink = function (editor) {
   return function () {
     editor.undoManager.transact(function () {
       const node = editor.selection.getNode();
+      debugger;
       if (isImageFigure(node)) {
-        unlinkImageFigure(editor, node);
+        sntUnlinkImageFigure(editor, node);
       } else {
-        editor.execCommand('unlink');
+        editor.execCommand('mceRemoveSntLink');
       }
     });
   };
 };
 
-const unlinkImageFigure = function (editor, fig) {
-  let a;
+/**
+ * Wrap image inside figure element in snt-link tag
+ * @param {Object} editor 
+ * @param {HTMLElement} fig 
+ * @returns {Void}
+ */
+const sntUnlinkImageFigure = function (editor, fig) {
+  let sntLink;
   let img;
   img = editor.dom.select('img', fig)[0];
   if (img) {
-    a = editor.dom.getParents(img, 'a[href]', fig)[0];
-    if (a) {
-      a.parentNode.insertBefore(img, a);
-      editor.dom.remove(a);
+    sntLink = editor.dom.getParents(img, 'snt-link[href]', fig)[0];
+    if (sntLink) {
+      sntLink.parentNode.insertBefore(img, sntLink);
+      editor.dom.remove(sntLink);
     }
   }
 };
 
-const linkImageFigure = function (editor, fig, attrs) {
-  let a;
+/**
+ * Rempve snt-link tag wrap around image inside figure element
+ * @param {Object} editor 
+ * @param {Object} fig 
+ * @param {Object} attrs 
+ * @returns {Void}
+ */
+const sntLinkImageFigure = function (editor, fig, attrs) {
+  let sntLink;
   let img;
   img = editor.dom.select('img', fig)[0];
   if (img) {
-    a = editor.dom.create('a', attrs);
-    img.parentNode.insertBefore(a, img);
-    a.appendChild(img);
+    sntLink = editor.dom.create('snt-link', attrs);
+    img.parentNode.insertBefore(sntLink, img);
+    sntLink.appendChild(img);
   }
 };
 
 export default {
-  link,
-  unlink,
-  isLink,
-  hasLinks,
+  sntLink,
+  sntUnlink,
+  isSntLink,
+  hasSntLinks,
   isOnlyTextSelected,
-  getAnchorElement,
-  getAnchorText,
+  getSntLinkElement,
+  getSntLinkText,
   toggleTargetRules
 };

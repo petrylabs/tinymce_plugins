@@ -15,6 +15,7 @@ tinymce.init({
   extended_valid_elements: 'snt-link[*]',
   custom_elements: '~snt-link',
   content_css: '/assets/css/wysiwyg_styles.css?bogus=' + new Date().getTime(),
+  image_caption: true,
   height: 600,
   link_class_list: [
     {title: 'None', value: ''},
