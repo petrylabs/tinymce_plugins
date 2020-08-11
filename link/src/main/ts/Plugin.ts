@@ -10,6 +10,7 @@ const setup = (editor) => {
   Controls.setupButtons(editor);
   Controls.setupMenuItems(editor);
   Controls.setupContextToolbars(editor);
+  
   Actions.setupGotoLinks(editor);
   Commands.register(editor);
   Keyboard.setup(editor);

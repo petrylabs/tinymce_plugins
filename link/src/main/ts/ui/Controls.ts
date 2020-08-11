@@ -15,7 +15,7 @@ const setupButtons = function (editor) {
   editor.addButton('snt-link', {
     active: false,
     icon: 'link',
-    text: 'SntLink',
+    text: '',
     tooltip: 'Insert / Edit SntLink',
     onclick: Actions.openDialog(editor),
     onpostrender: Actions.toggleActiveState(editor)
@@ -27,15 +27,38 @@ const setupButtons = function (editor) {
   editor.addButton('snt-unlink', {
     active: false,
     icon: 'unlink',
-    text: 'Remove SntLink',
+    text: '',
     tooltip: 'Remove SntLink',
     onclick: Utils.sntUnlink(editor),
-    //onpostrender: Actions.toggleActiveState(editor)
+    onpostrender: Actions.toggleActiveState(editor)
   });
+  /**
+   * DESCRIPTION
+   */
+  if (editor.addContextToolbar) {
+    editor.addButton('snt-openlink', {
+      icon: 'newtab',
+      tooltip: 'Open SntLink',
+      onclick: Actions.gotoSelectedLink(editor)
+    });
+  }
 };
 
 const setupMenuItems = function (editor) {
-  editor.addMenuItem('sntlink', {
+  /**
+   * DESCRIPTION
+   */
+  editor.addMenuItem('snt-openlink', {
+    text: 'Open SntLink',
+    icon: 'newtab',
+    onclick: Actions.gotoSelectedLink(editor),
+    onPostRender: Actions.toggleViewLinkState(editor),
+    prependToContext: true
+  });
+  /**
+   * DESCRIPTION
+   */
+  editor.addMenuItem('snt-link', {
     icon: 'link',
     text: 'SntLink',
     shortcut: 'Meta+K',
@@ -44,33 +67,22 @@ const setupMenuItems = function (editor) {
     context: 'insert',
     prependToContext: true
   });
-  // editor.addMenuItem('sntunlink', {
-  //   icon: 'unlink',
-  //   text: 'Remove link',
-  //   onclick: Utils.sntUnlink(editor),
-  //   stateSelector: 'snt-link[href]'
-  // });
+  /**
+   * DESCRIPTION
+   */
+  editor.addMenuItem('unlink', {
+    icon: 'unlink',
+    text: 'Remove SntLink',
+    onclick: Utils.sntUnlink(editor),
+    stateSelector: 'snt[href]'
+  });
 };
 
 const setupContextToolbars = function (editor) {
   if (editor.addContextToolbar) {
-    editor.addButton('openlink', {
-      icon: 'newtab',
-      text: 'Open SntLink',
-      tooltip: '',
-      onclick: Actions.gotoSelectedLink(editor)
-    });
-    editor.addButton('unlink', {
-      icon: 'unlink',
-      text: 'Remove SntLink',
-      tooltip: '',
-      onclick: Utils.sntUnlink(editor)
-    });
-  }
-  if (editor.addContextToolbar) {
     editor.addContextToolbar(
       Actions.leftClickedOnAHref(editor),
-      'openlink unlink'
+      'snt-openlink | snt-link snt-unlink'
     );
   }
 };

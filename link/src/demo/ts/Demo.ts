@@ -9,8 +9,8 @@ Plugin();
 
 tinymce.init({
   selector: 'textarea.tinymce',
-  plugins: 'contextmenu code anchor snt-link contextmenu image',
-  toolbar: 'code anchor snt-link snt-unlink image',
+  plugins: 'contextmenu code anchor link snt-link contextmenu image',
+  toolbar: 'link | unlink | openlink | snt-link | snt-unlink | snt-openlink | code | anchor | image',
   valid_elements: '*[*]',
   extended_valid_elements: 'snt-link[*]',
   custom_elements: '~snt-link',

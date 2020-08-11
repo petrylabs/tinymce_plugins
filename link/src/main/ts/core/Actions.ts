@@ -150,29 +150,29 @@ const toggleActiveState = function (editor) {
 };
 
 
-// const toggleViewLinkState = function (editor) {
-//   return function () {
-//     const self = this;
+const toggleViewLinkState = function (editor) {
+  return function () {
+    const self = this;
 
-//     const toggleVisibility = function (e) {
-//       if (Utils.hasSntLinks(e.parents)) {
-//         self.show();
-//       } else {
-//         self.hide();
-//       }
-//     };
+    const toggleVisibility = function (e) {
+      if (Utils.hasSntLinks(e.parents)) {
+        self.show();
+      } else {
+        self.hide();
+      }
+    };
 
-//     if (!Utils.hasSntLinks(editor.dom.getParents(editor.selection.getStart()))) {
-//       self.hide();
-//     }
+    if (!Utils.hasSntLinks(editor.dom.getParents(editor.selection.getStart()))) {
+      self.hide();
+    }
 
-//     editor.on('nodechange', toggleVisibility);
+    editor.on('nodechange', toggleVisibility);
 
-//     self.on('remove', function () {
-//       editor.off('nodechange', toggleVisibility);
-//     });
-//   };
-// };
+    self.on('remove', function () {
+      editor.off('nodechange', toggleVisibility);
+    });
+  };
+};
 
 const removeSntLink = function(editor) {
   return function() {
@@ -231,7 +231,7 @@ export default {
   leftClickedOnAHref,
   setupGotoLinks,
   toggleActiveState,
-  // toggleViewLinkState,
+  toggleViewLinkState,
   removeSntLink,
   insertSntLink
 };
