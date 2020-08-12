@@ -132,7 +132,6 @@ const showDialog = function (editor, linkList) {
     });
 
     if (anchorList.length) {
-      console.log('url', url, 'anchorList', anchorList);
       anchorList.unshift({ text: 'None', value: '' });
 
       return {
@@ -189,7 +188,6 @@ const showDialog = function (editor, linkList) {
   };
 
   onlyText = Utils.isOnlyTextSelected(selection.getContent());
-  console.log('onlyText?', onlyText);
   anchorElm = Utils.getSntLinkElement(editor);
 
   data.text = initialText = Utils.getSntLinkText(editor.selection, anchorElm);

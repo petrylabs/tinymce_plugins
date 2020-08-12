@@ -4,6 +4,7 @@
  * For LGPL see License.txt in the project root for license information.
  * For commercial licenses see https://www.tiny.cloud/
  */
+
 import Settings from '../api/Settings';
 import OpenUrl from './OpenUrl';
 import Utils from '../util/Utils';
@@ -19,15 +20,12 @@ declare const tinymce: any;
  */
 const getSntLink = function (editor, elm) {
   const link = editor.dom.getParent(elm, 'snt-link[href]');
-  console.log('snt-link', link);
   return link;
 };
 
 const getSelectedSntLink = function (editor) {
   const selection = editor.selection.getStart();
-  console.log('selection', selection);
   const selectedLink = getSntLink(editor, selection);
-  console.log('selectedLink', selectedLink);
   return selectedLink;
 };
 
@@ -88,9 +86,6 @@ const leftClickedOnAHref = function (editor) {
     let sel;
     let rng;
     let node;
-    console.log('Settings.hasContextToolbar(editor.settings)', Settings.hasContextToolbar(editor.settings));
-    console.log('!isContextMenuVisible(editor)',!isContextMenuVisible(editor));
-    console.log('Utils.isSntLink(elm)', Utils.isSntLink(elm));
     if (Settings.hasContextToolbar(editor.settings) && 
     !isContextMenuVisible(editor) && 
     Utils.isSntLink(elm)) {
@@ -202,19 +197,15 @@ const insertSntLink = function(editor) {
     // Spaces are never valid in URLs and it's a very common mistake for people to make so we fix it here.
     value.href = value.href.replace(' ', '%20');
 
-    console.log('Commands.ts:29 value', value, 'mycustomformat', sntLink);
-
     // Remove existing links if there could be child links or that the href isn't specified
     // if (!anchor || !value.href) {
     if (!sntLink || !value.href) {
-      console.log('>>> Remove format');
       // editor.formatter.remove('link');
       editor.formatter.remove('sntlink');
     }
 
     // Apply new link to selection
     if (value.href) {
-      console.log('>>> Apply new link to selection ');
       if(editor.formatter.get('sntlink')) {
         // editor.formatter.apply('link', value, sntLink);
         editor.formatter.apply('sntlink', value);

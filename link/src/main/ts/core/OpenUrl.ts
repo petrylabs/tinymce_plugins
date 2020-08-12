@@ -10,8 +10,6 @@ import { document, window } from '@ephox/dom-globals';
 declare const tinymce: any;
 
 const appendClickRemove = function (link, evt) {
-  console.log('appendClickRemove');
-  console.log('link', link, 'evt', 'evt');
   document.body.appendChild(link);
   link.dispatchEvent(evt);
   document.body.removeChild(link);

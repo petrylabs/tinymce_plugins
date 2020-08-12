@@ -79,7 +79,6 @@ const getSntLinkText = function (selection, sntLinkElm) {
  * @returns {boolean}
  */
 const isSntLink = function (elm) {
-  console.log('elm', elm);
   return elm && elm.nodeName === 'SNT-LINK' && elm.getAttribute('href');
 };
 
@@ -158,8 +157,6 @@ const sntLink = function (editor, attachState) {
         editor.selection.select(sntLinkElm);
         editor.undoManager.add();
       } else {
-        // console.log('Utils.ts:119 linkAttrs', linkAttrs);
-        debugger;
         if (isImageFigure(selectedElm)) {
           sntLinkImageFigure(editor, selectedElm, linkAttrs);
         } 
@@ -184,7 +181,6 @@ const sntUnlink = function (editor) {
   return function () {
     editor.undoManager.transact(function () {
       const node = editor.selection.getNode();
-      debugger;
       if (isImageFigure(node)) {
         sntUnlinkImageFigure(editor, node);
       } else {
