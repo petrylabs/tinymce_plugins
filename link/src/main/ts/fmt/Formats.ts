@@ -7,6 +7,12 @@
 
 declare const tinymce: any;
 
+/**
+ * Apply snt-link formatting to current selection or nodes
+ * {@link https://www.tiny.cloud/docs-4x/api/tinymce/tinymce.formatter/ Docs}
+ * @param {Object} editor
+ * @returns {Void} 
+ */
 const setup = function (editor) {    
 
   editor.formatter.register('sntlink', {
@@ -32,3 +38,5 @@ const setup = function (editor) {
 export default {
   setup
 };
+
+setup

@@ -172,7 +172,7 @@ const toggleViewLinkState = function (editor) {
 const removeSntLink = function(editor) {
   return function() {
     if (editor.selection.isCollapsed()) {
-      const elm = editor.dom.getParent(editor.selection.getStart(), 'a');
+      const elm = editor.dom.getParent(editor.selection.getStart(), 'snt-link');
       if (elm) {
         editor.dom.remove(elm, true);
       }
@@ -184,30 +184,24 @@ const removeSntLink = function(editor) {
 
 const insertSntLink = function(editor) {
   return function(ui, value) {    
-    // let anchor;
     let sntLink;
 
     if (typeof value === 'string') {
       value = { href: value };
     }
-
-    // anchor = editor.dom.getParent(editor.selection.getNode(), 'a');
     sntLink = editor.dom.getParent(editor.selection.getNode(), 'snt-link');
 
     // Spaces are never valid in URLs and it's a very common mistake for people to make so we fix it here.
     value.href = value.href.replace(' ', '%20');
 
     // Remove existing links if there could be child links or that the href isn't specified
-    // if (!anchor || !value.href) {
     if (!sntLink || !value.href) {
-      // editor.formatter.remove('link');
       editor.formatter.remove('sntlink');
     }
 
     // Apply new link to selection
     if (value.href) {
       if(editor.formatter.get('sntlink')) {
-        // editor.formatter.apply('link', value, sntLink);
         editor.formatter.apply('sntlink', value);
       } else {
         throw new Error('Specified formatter has not been registered!');

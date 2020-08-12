@@ -21,7 +21,7 @@ const open = function (url) {
   // Edge has only implemented noreferrer and it seems to remove opener as well
   // Older IE versions pre IE 11 falls back to a window.open approach
   if (!tinymce.Env.ie || tinymce.Env.ie > 10) {
-    const link = document.createElement('a');
+    const link = document.createElement('a'); // do not replace with snt-link
     link.target = '_blank';
     link.href = url;
     link.rel = 'noreferrer noopener';

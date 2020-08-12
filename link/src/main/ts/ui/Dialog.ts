@@ -9,16 +9,17 @@ import Settings from '../api/Settings';
 import Utils from '../util/Utils';
 
 declare const tinymce: any;
-
 let attachState = {};
 
 /**
- * Creates link list based on link_list settings parameter.
- * {@link https://www.tiny.cloud/docs-4x/plugins/link/#link_list|TinyMCE Docs}
- * @param {Object} editor - Editor description
- * @param {Function} callback - Callback description
+ * Create link list based on editor link_list parameter.
+ * {@link https://www.tiny.cloud/docs-4x/plugins/link/#link_list Docs}
+ * @param {Object} editor
+ * @param {Function} callback
+ * @returns {Void}
  */
 const createLinkList = function (editor, callback) {
+  
   const linkList = Settings.getLinkList(editor.settings);
 
   if (typeof linkList === 'string') {
@@ -28,24 +29,28 @@ const createLinkList = function (editor, callback) {
         callback(editor, JSON.parse(text));
       }
     });
-  } else if (typeof linkList === 'function') {
+  } 
+  else if (typeof linkList === 'function') {
     linkList(function (list) {
       callback(editor, list);
     });
-  } else {
+  } 
+  else {
     callback(editor, linkList);
   }
 };
 
 /**
- * Builds link list based on link_list settings parameter.
+ * Build link list based on editor link_list parameter.
  * {@link https://www.tiny.cloud/docs-4x/plugins/link/#link_list|TinyMCE Docs}
  * @param inputList 
  * @param itemCallback 
  * @param startItems 
  */
 const buildListItems = function (inputList, itemCallback?, startItems?) {
+
   const appendItems = function (values, output?) {
+    
     output = output || [];
 
     tinymce.util.Tools.each(values, function (item) {
@@ -277,7 +282,7 @@ const showDialog = function (editor, linkList) {
         function (item) {
           if (item.value) {
             item.textStyle = function () {
-              return editor.formatter.getCssText({ inline: 'a', classes: [item.value] });
+              return editor.formatter.getCssText({ inline: 'snt-link', classes: [item.value] });
             };
           }
         }

@@ -2,7 +2,7 @@
  * SntLink Plugin - Valid Init Config Options
  * 
  * 
- * 
+ * inline_boundaries_selector: 'code, a[href], snt[href]', // More info at https://www.tiny.cloud/docs-4x/configure/content-appearance/#inline_boundaries_selector
  * extended_valid_elements: 'snt-link[*]'
  * custom_elements: '~snt-link'
  * toolbar: 'snt-link | snt-unlink | snt-openlink'
