@@ -44,7 +44,7 @@ const setupMenuItems = function (editor) {
   });
   editor.addMenuItem('snt-link', {
     icon: 'link',
-    text: 'SntLink',
+    text: 'Insert SntLink',
     shortcut: 'Meta+K',
     onclick: Actions.openDialog(editor),
     stateSelector: 'snt-link[href]',

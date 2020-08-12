@@ -17,6 +17,7 @@ tinymce.init({
   content_css: '/assets/css/wysiwyg_styles.css?bogus=' + new Date().getTime(),
   image_caption: true,
   inline_boundaries_selector: 'code, a[href], snt-link[href]',
+  contextmenu: 'snt-link',
   link_context_toolbar: true,
   height: 600,
   link_class_list: [

@@ -1,13 +1,14 @@
-snt-link {
-    padding: 0 1rem;
-    border: 1px dotted red;
+snt-link[data-mce-selected="inline-boundary"] {
+    background: transparent;
+    outline: 1px dotted red;
 }
 snt-link[target=_blank] {
     position: relative;
+    padding-right: 1.25rem;
 }
 snt-link[target=_blank]:before {
     position: absolute;
-    left: 100%;
+    right: 0;
     top: 0;
     bottom: 0;
     content: '';
